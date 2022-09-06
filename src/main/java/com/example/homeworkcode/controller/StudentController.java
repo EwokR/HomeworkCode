@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collection;
 import java.util.Collections;
 
+
 @RequestMapping("student")
 @RestController
 public class StudentController {
@@ -46,7 +47,10 @@ public class StudentController {
     }
 
     @GetMapping
-    public Collection<Student> StudentFilter(@RequestParam int age) {
-        return studentService.StudentFilter(age);
+    public ResponseEntity<Collection<Student>> StudentFilter(@RequestParam(required = false) int age) {
+        if (age > 0) {
+            return ResponseEntity.ok(studentService.StudentFilter(age));
+        }
+        return ResponseEntity.ok(Collections.emptyList());
     }
 }
