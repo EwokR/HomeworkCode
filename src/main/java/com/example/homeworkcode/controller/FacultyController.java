@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.Collections;
 
 @RequestMapping("faculty")
 @RestController
@@ -44,7 +45,10 @@ public class FacultyController {
     }
 
     @GetMapping
-    public Collection<Faculty> FacultyFilter(@RequestParam String colour) {
-        return facultyService.FacultyFilter(colour);
+    public ResponseEntity<Collection<Faculty>> FacultyFilter(@RequestParam(required = false) String colour) {
+        if (colour != null && !colour.isBlank()) {
+            return ResponseEntity.ok(facultyService.FacultyFilter(colour));
+        }
+        return ResponseEntity.ok(Collections.emptyList());
     }
 }
